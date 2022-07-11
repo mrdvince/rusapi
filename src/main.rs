@@ -1,15 +1,19 @@
-use actix_web::{web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{get, web, HttpServer, App};
+struct AppState {
+    app_name: String,
+}
 
-async fn manual_hello() -> impl Responder {
-    HttpResponse::Ok().json("Hello cows")
+#[get("/")]
+async fn index(data: web::Data<AppState>) -> String {
+    let app_name = &data.app_name;
+    format!("Hello {app_name}")
 }
 
 #[actix_web::main]
-async fn main() -> std::io::Result<()> {
+async fn main()-> std::io::Result<()>{
     HttpServer::new(|| {
-        App::new().service(web::scope("/app").route("/index.html", web::get().to(manual_hello)))
-    })
-        .bind(("127.0.0.1", 8080))?
-        .run()
-        .await
+        App::new().app_data(web::Data::new(AppState{
+            app_name: String::from("Learning some actix")
+        })).service(index)
+    }).bind(("127.0.0.1", 8080))?.run().await
 }

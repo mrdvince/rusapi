@@ -1,2 +1,2 @@
 # rusapi
-Actix backend API template (rust)
+Learning some rust and web with zero to production book

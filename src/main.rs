@@ -1,19 +1,16 @@
-use actix_web::{get, web, HttpServer, App};
-struct AppState {
-    app_name: String,
+use actix_web::{web, App, HttpRequest, HttpServer, Responder};
+async fn greet(req: HttpRequest) -> impl Responder {
+    let name = req.match_info().get("name").unwrap_or("World");
+    format!("Hello {}!", &name)
 }
-
-#[get("/")]
-async fn index(data: web::Data<AppState>) -> String {
-    let app_name = &data.app_name;
-    format!("Hello {app_name}")
-}
-
-#[actix_web::main]
-async fn main()-> std::io::Result<()>{
+#[tokio::main]
+async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
-        App::new().app_data(web::Data::new(AppState{
-            app_name: String::from("Learning some actix")
-        })).service(index)
-    }).bind(("127.0.0.1", 8080))?.run().await
+        App::new()
+            .route("/", web::get().to(greet))
+            .route("/{name}", web::get().to(greet))
+    })
+    .bind("127.0.0.1:8000")?
+    .run()
+    .await
 }

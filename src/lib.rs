@@ -1,7 +1,7 @@
 use actix_web::{dev::Server, web, App, HttpResponse, HttpServer, Responder};
 
 async fn greet() -> impl Responder {
-    format!("Hello World!")
+    ("Hello World!").to_string()
 }
 
 async fn health_check() -> impl Responder {

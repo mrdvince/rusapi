@@ -10,7 +10,21 @@ path = "src/lib.rs"
 
 [dependencies]
 actix-web = "4.3.1"
+serde = { version = "1.0.158", features = ["derive"] }
 tokio = { version = "1.26.0", features = ["macros", "rt-multi-thread"] }
+
+# Using table-like toml syntaxca
+[dependencies.sqlx]
+version = "0.6.2"
+default-features = false
+features = [
+    "runtime-actix-rustls",
+    "macros",
+    "postgres",
+    "uuid",
+    "chrono",
+    "migrate",
+]
 
 [target.aarch64-apple-darwin]
 rustflags = ["-C", "link-arg=-fuse-ld=/usr/local/bin/zld"]

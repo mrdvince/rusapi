@@ -1,6 +1,6 @@
 use std::net::TcpListener;
 
-use rusapi::run;
+use rusapi::startup::run;
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {

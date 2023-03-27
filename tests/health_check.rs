@@ -25,7 +25,7 @@ fn spawn_app() -> String {
 
     let port = listener.local_addr().unwrap().port();
 
-    let server = rusapi::run(listener).expect("Failed to start bind address");
+    let server = rusapi::startup::run(listener).expect("Failed to start bind address");
     let _ = tokio::spawn(server);
     format!("http://127.0.0.1:{}", port)
 }

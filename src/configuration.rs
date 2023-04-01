@@ -29,4 +29,10 @@ impl DatabaseSettings {
             self.username, self.password, self.host, self.port, self.database_name
         )
     }
+    pub fn connection_without_db_name(&self) -> String {
+        format!(
+            "postgress://{}:{}@{}:{}",
+            self.username, self.password, self.host, self.port
+        )
+    }
 }

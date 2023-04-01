@@ -1,6 +1,7 @@
 use std::net::TcpListener;
 
 use rusapi::{configuration::get_configuration, startup};
+use sqlx::PgPool;
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
@@ -8,5 +9,9 @@ async fn main() -> std::io::Result<()> {
     let address = format!("127.0.0.1:{}", configuration.application_port);
     let listener = TcpListener::bind(address).expect("Failed binding to port specified");
 
-    startup::run(listener)?.await
+    let pg_connection = PgPool::connect(&configuration.database.connection_string())
+        .await
+        .expect("Failed to connect to postgress");
+
+    startup::run(listener, pg_connection)?.await
 }
